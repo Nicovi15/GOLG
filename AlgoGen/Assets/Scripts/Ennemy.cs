@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Ennemy : Unite
 {
+    public Ennemy(Unite a) : base(a)
+    {
+    }
+
     // Start is called before the first frame update
     void Start()
     {

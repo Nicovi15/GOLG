@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3666786450373340795}
   - component: {fileID: 7851254021423426729}
   - component: {fileID: 1787246012031566820}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,8 +100,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFree: 0
   currentUnite: {fileID: 0}
-  evenColor: {r: 0.31764707, g: 0.7372549, b: 0.30980393, a: 1}
-  oddColor: {r: 0.21601804, g: 0.4811321, b: 0.21106265, a: 1}
+  evenColor: {r: 0.64, g: 0.64, b: 0.64, a: 1}
+  oddColor: {r: 0.15, g: 0.15, b: 0.15, a: 1}
+  neighbors: []
+  ContourPrefab: {fileID: 5092435529456181923, guid: 8d4828224466b574b80de60a8b270559, type: 3}
+  status: 0
 --- !u!61 &1787246012031566820
 BoxCollider2D:
   m_ObjectHideFlags: 0

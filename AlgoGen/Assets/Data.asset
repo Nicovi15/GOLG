@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a17d168c7c9cde49b694ab28fe33306, type: 3}
+  m_Name: Data
+  m_EditorClassIdentifier: 
+  defaultHpMax: 50
+  offSetHpMax: 30
+  defaultDefense: 20
+  offSetDefense: 40
+  defaultAttack: 20
+  offSetAttack: 40
+  defaultSpeedAtt: 20
+  offSetSpeedAtt: 40
+  defaultCrit: 0
+  offSetCrit: 20
+  defaultSpeedRegen: 0.2
+  offSetSpeedRegen: 0.1
+  defaultRegen: 10
+  offSetRegen: 10
+  face:
+  - {fileID: 21300000, guid: 2fa725674dacd084f9b01e3c6da4fb7b, type: 3}
+  - {fileID: 21300000, guid: 51bdf4a0ea5248d4284a8cd933ab44d5, type: 3}
+  - {fileID: 21300000, guid: 1d7ebf6dcfd1ce449ad235320c373e6f, type: 3}
+  faceb:
+  - {fileID: 21300000, guid: 5840147fe33a78740a97fbdd091b8d8f, type: 3}
+  - {fileID: 21300000, guid: 1e42b364b351e0b44be08ad6ee29ad23, type: 3}
+  - {fileID: 21300000, guid: 3ce2f4177bf70c0429900c9f7e982dfb, type: 3}

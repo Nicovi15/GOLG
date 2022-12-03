@@ -10,11 +10,18 @@ public class GridInit : MonoBehaviour
     [SerializeField]
     GameObject prefabTile;
 
-    Tile[,] tiles;
+    public Tile[,] tiles;
 
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    public void CreateGrille(int w, int h)
+    {
+        width = w;
+        hight = h;
         tiles = new Tile[width, hight];
         for (int i = 0; i < width; i++)
             for (int j = 0; j < hight; j++)
