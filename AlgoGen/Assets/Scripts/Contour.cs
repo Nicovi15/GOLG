@@ -18,8 +18,11 @@ public class Contour : MonoBehaviour
     SpriteRenderer SR;
     BoxCollider2D col;
 
+    Mouse M;
+
     private void Awake()
     {
+        M = GameObject.Find("Mouse").GetComponent<Mouse>();
         SR = GetComponent<SpriteRenderer>();
         col = GetComponent<BoxCollider2D>();
     }
@@ -79,7 +82,7 @@ public class Contour : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (t.status == tileState.born)
+        if (t.status == tileState.born && M.currentGrab == null)
         {
             t.startPreviewParent();
         }

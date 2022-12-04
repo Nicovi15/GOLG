@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,6 +37,8 @@ public class GameManager : MonoBehaviour
     FichePerso previewParent2;
 
     [SerializeField]
+    GameObject contourGrid;
+    [SerializeField]
     GameObject contourGrid2;
 
     [SerializeField]
@@ -51,15 +54,35 @@ public class GameManager : MonoBehaviour
     TextMeshProUGUI roundPhase;
     [SerializeField]
     TextMeshProUGUI TitlePhase;
+    [SerializeField]
+    TextMeshProUGUI maxRound;
 
     public bool isBreeding = true;
     public bool isFighting = false;
     public Unite Champion;
 
+    [SerializeField]
+    CombatManager CM;
+
+    [SerializeField]
+    GameObject nextButton;
+
+    [SerializeField]
+    GameObject StartButton;
+    [SerializeField]
+    GameObject mainTitle;
+
+    [SerializeField]
+    GameObject GO;
+    [SerializeField]
+    FichePerso previewWinner;
+    [SerializeField]
+    FichePerso previewEnnemy;
+
     // Start is called before the first frame update
     void Start()
     {
-        startNewGame();
+        G.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -70,6 +93,15 @@ public class GameManager : MonoBehaviour
 
     public void startNewGame()
     {
+        mainTitle.SetActive(false);
+        StartButton.SetActive(false);
+        G.gameObject.SetActive(true);
+        contourGrid.SetActive(true);
+        contourGrid2.SetActive(true);
+        nextButton.SetActive(true);
+        roundPhase.gameObject.SetActive(true);
+        TitlePhase.gameObject.SetActive(true);
+
         GI = Instantiate(grilleInitPrefab).GetComponent<GridInit>();
         GI.transform.position = new Vector3((-widthInit + 1) * 0.32f, -3.0f, 0);
         GI.CreateGrille(widthInit, hightInit);
@@ -84,10 +116,10 @@ public class GameManager : MonoBehaviour
             for(int j = 0; j < hightInit; j++)
             {
                 Unite newUnite = Instantiate(basePrefab).GetComponent<Ally>();
-                newUnite.hpMax = Mathf.Clamp(Random.Range(S.defaultHpMax - S.offSetHpMax, S.defaultHpMax + S.offSetHpMax), 0, 100);
-                newUnite.defense = Mathf.Clamp(Random.Range(S.defaultDefense - S.offSetDefense, S.defaultDefense + S.offSetDefense), 0, 100);
-                newUnite.attack = Mathf.Clamp(Random.Range(S.defaultAttack - S.offSetAttack, S.defaultAttack + S.offSetAttack), 0, 100);
-                newUnite.speedAtt = Mathf.Clamp(Random.Range(S.defaultSpeedAtt - S.offSetSpeedAtt, S.defaultSpeedAtt + S.offSetSpeedAtt), 0, 100);
+                newUnite.hpMax = Mathf.Clamp(Random.Range(S.defaultHpMax - S.offSetHpMax, S.defaultHpMax + S.offSetHpMax), 1, 100);
+                newUnite.defense = Mathf.Clamp(Random.Range(S.defaultDefense - S.offSetDefense, S.defaultDefense + S.offSetDefense), 1, 100);
+                newUnite.attack = Mathf.Clamp(Random.Range(S.defaultAttack - S.offSetAttack, S.defaultAttack + S.offSetAttack), 1, 100);
+                newUnite.speedAtt = Mathf.Clamp(Random.Range(S.defaultSpeedAtt - S.offSetSpeedAtt, S.defaultSpeedAtt + S.offSetSpeedAtt), 1, 100);
                 newUnite.crit = Mathf.Clamp(Random.Range(S.defaultCrit - S.offSetCrit, S.defaultCrit + S.offSetCrit), 0, 100);
                 newUnite.speedRegen = Mathf.Clamp(Random.Range(S.defaultSpeedRegen - S.offSetSpeedRegen, S.defaultSpeedRegen + S.offSetSpeedRegen), 0, 100);
                 newUnite.regen = Mathf.Clamp(Random.Range(S.defaultRegen - S.offSetRegen, S.defaultRegen + S.offSetRegen), 0, 100);
@@ -162,12 +194,45 @@ public class GameManager : MonoBehaviour
         {
             if (ChampionTile.currentUnite == null)
                 return;
-            Debug.Log(ChampionTile.currentUnite);
-            Champion = ChampionTile.currentUnite;
-            isFighting = true;
-            currentRound = 0;
-            TitlePhase.text = "Fighting Phase";
-            roundPhase.text = "Round: " + currentRound;
+
+            if(Champion == null)
+            {
+                Destroy(G.gameObject);
+                contourGrid.SetActive(false);
+                //Debug.Log(ChampionTile.currentUnite);
+                ChampionSetup.SetActive(false);
+                Champion = ChampionTile.currentUnite;
+                isFighting = true;
+                currentRound = 1;
+                TitlePhase.text = "Fighting Phase";
+                roundPhase.text = "Round: " + currentRound;
+                CM.startRound();
+            }
+            else
+            {
+                if (!CM.enFight)
+                {
+                    if (!CM.finished)
+                    {
+                        currentRound++;
+                        roundPhase.text = "Round: " + currentRound;
+                        CM.startRound();
+                    }
+                    else
+                    {
+                        CM.removeCombats();
+                        //Debug.Log(CM.winner);
+                        GO.SetActive(true);
+                        nextButton.SetActive(false);
+                        roundPhase.gameObject.SetActive(false);
+                        TitlePhase.gameObject.SetActive(false);
+                        previewWinner.updateFiche(Champion);
+                        previewEnnemy.updateFiche(CM.winner);
+                        maxRound.text = "Max Round: " + currentRound;
+                    }
+                }
+                
+            }
 
 
         }
@@ -205,10 +270,8 @@ public class GameManager : MonoBehaviour
         return newUnite;
     }
 
-    public Unite generateNewUniteRandom(List<Unite> parents)
+    public Unite generateNewUniteRandom(List<Unite> parents, int probaMut = 5)
     {
-        int probaMut = 10;
-
         Unite newUnite = Instantiate(basePrefab).GetComponent<Ally>();
         newUnite.hpMax = parents[Random.Range((int)0, (int)3)].hpMax + (Random.Range((int)0, (int)probaMut) == 0 ? Random.Range(1.0f, 10.0f) : 0);
         newUnite.defense = parents[Random.Range((int)0, (int)3)].defense + (Random.Range((int)0, (int)probaMut) == 0 ? Random.Range(1.0f, 10.0f) : 0);
@@ -225,5 +288,10 @@ public class GameManager : MonoBehaviour
         newUnite.init();
 
         return newUnite;
+    }
+
+    public void Reset()
+    {
+        SceneManager.LoadScene(0);
     }
 }

@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHpMax: 50
   offSetHpMax: 30
-  defaultDefense: 20
+  defaultDefense: 30
   offSetDefense: 40
-  defaultAttack: 20
+  defaultAttack: 30
   offSetAttack: 40
   defaultSpeedAtt: 20
-  offSetSpeedAtt: 40
+  offSetSpeedAtt: 30
   defaultCrit: 0
   offSetCrit: 20
-  defaultSpeedRegen: 0.2
-  offSetSpeedRegen: 0.1
+  defaultSpeedRegen: 10
+  offSetSpeedRegen: 5
   defaultRegen: 10
   offSetRegen: 10
   face:

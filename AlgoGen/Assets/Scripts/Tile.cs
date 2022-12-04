@@ -37,8 +37,11 @@ public class Tile : MonoBehaviour
 
     public List<Unite> parents = new List<Unite>();
 
+    BoxCollider2D col;
+
     private void Awake()
     {
+        col = GetComponent<BoxCollider2D>();
         SR = GetComponent<SpriteRenderer>();
         GM = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
@@ -90,6 +93,7 @@ public class Tile : MonoBehaviour
         newUnite.currentTile = this;
         currentUnite = newUnite;
         isFree = false;
+        col.enabled = false;
         newUnite.transform.position = transform.position;
         newUnite.transform.SetParent(transform);
     }
@@ -107,6 +111,7 @@ public class Tile : MonoBehaviour
         Destroy(currentUnite.gameObject);
         currentUnite = null;
         isFree = true;
+        col.enabled = true;
     }
 
     public void initNeighbors()
@@ -143,6 +148,8 @@ public class Tile : MonoBehaviour
 
         if(G && GM.isBreeding)
             G.updateTiles();
+
+        col.enabled = false;
     }
 
     public void removeUnite()
@@ -151,6 +158,8 @@ public class Tile : MonoBehaviour
         isFree = true;
         if (G && GM.isBreeding)
             G.updateTiles();
+
+        col.enabled = true;
     }
 
     public void updateStatus()

@@ -11,6 +11,8 @@ public class FichePerso : MonoBehaviour
     [SerializeField]
     Image bg;
     [SerializeField]
+    Image eyes;
+    [SerializeField]
     TextMeshProUGUI hp;
     [SerializeField]
     TextMeshProUGUI def;
@@ -40,7 +42,9 @@ public class FichePerso : MonoBehaviour
     public void updateFiche(Unite u)
     {
         im.sprite = u.sp0;
-        im.color = u.GetComponent<SpriteRenderer>().color;
+        im.color = Color.HSVToRGB(u.colorHigh, 0.65f, 1.0f);
+        if(eyes != null)
+            eyes.color = Color.HSVToRGB(u.colorHigh, 0.65f, 1.0f);
         bg.color = Color.HSVToRGB(u.colorHigh, 0.45f, 1.0f); 
         hp.text = u.hpMax.ToString("0.0");
         def.text = u.defense.ToString("0.0");
